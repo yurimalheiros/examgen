@@ -1,0 +1,63 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#header h1 {
+    font-size: 12pt;
+}
+
+#header h2 {
+    font-size: 12pt;
+    font-weight: normal;
+    margin: 1px 0;
+}
+
+#examcode {
+    float: right;
+    font-size: 8pt;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+#student {
+    margin: 24px 0;
+}
+#student h2 {
+    font-size: 12pt;
+    display: inline;
+}
+
+#student #name {
+    padding-right: 500px;
+}
+
+#exam {
+    font-size: 12pt;
+    text-align: center;
+    margin: 32px 0 24px 0;
+}
+
+.question {
+    margin-top: 32px;
+}
+
+.question h2, .question p {
+    font-size: 11pt;
+}
+
+.question-header .number {
+    float: left;
+}
+
+.question-header .marks {
+    float: right;
+}
+
+.question-body {
+    clear: both;
+}
+
+.question-answers {
+    font-size: 11pt;
+}
