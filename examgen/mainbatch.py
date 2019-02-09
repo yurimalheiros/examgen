@@ -1,4 +1,4 @@
-from examgen import BatchGenerator
+from examgen import Batch
 
-batch = BatchGenerator()
-batch.generate("exam1", 5, random_questions=True, random_answers=True, merge=True)
+batch = Batch("exam1", 3, random_answers=True, merge=True, front_and_back=True)
+batch.generate()
