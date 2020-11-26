@@ -161,7 +161,7 @@ class Exam(object):
 
         output_filepath = os.path.join(self.exam_directory, f"{output_name}.pdf")
 
-        os.system(f"pandoc --webtex='https://latex.codecogs.com/svg.latex?' --metadata pagetitle='examgen' -t html5 {generated_md_filepath} -o {output_filepath} --css {script_directory}/template/style.css --extract-media {media_filepath} --resource-path {self.exam_directory}")
+        os.system(f"pandoc --webtex='https://latex.codecogs.com/svg.latex?' --metadata pagetitle='examgen' -t html5 '{generated_md_filepath}' -o '{output_filepath}' --css '{script_directory}/template/style.css' --extract-media '{media_filepath}' --resource-path '{self.exam_directory}'")
         
         # remove temp files
         os.remove(generated_md_filepath)
