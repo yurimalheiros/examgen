@@ -11,13 +11,13 @@ class Question(object):
     """
     An exam question.
 
-    @question: question text/markdown
-    @alternatives: list of question alternatives
-    @correct_index: the correct alternative index
+    @question: question text/markdown.
+    @choices: list of question choices.
+    @correct_index: the correct choice index.
     """
-    def __init__(self, question, alternatives, correct_index):
+    def __init__(self, question, choices, correct_index):
         self.question = question
-        self.alternatives = alternatives
+        self.choices = choices
         self.correct_index = correct_index
 
 
@@ -31,7 +31,7 @@ class Exam(object):
 
         @exam_path: the exam filename.
         @random_questions: True to shuffle the questions, False to keep the order.
-        @random_answers: True to shuffle the alternatives, False to keep the order.
+        @random_answers: True to shuffle the choices, False to keep the order.
         """
 
         self.exam_path = exam_path
@@ -67,42 +67,44 @@ class Exam(object):
         """
         Parse a question file.
         It returns a Question object.
+
+        @filename: the question filename.
         """
         question = ""
-        alternatives = []
+        choices = []
         correct_index = None
 
         with open(filename) as f:
             text = f.read()
 
-            # The question text, the alternatives, and comments
+            # The question text, the choices, and comments
             # are separated by a "---" line
             text_split = text.split("---\n")
             question = text_split[0]
-            alternatives_text = text_split[1] 
+            choices_text = text_split[1] 
 
             question = question.strip() + "\n"
-            alternatives_list = alternatives_text.strip().split("\n")
+            choices_list = choices_text.strip().split("\n")
 
             if self.random_answers:
-                random.shuffle(alternatives_list)
+                random.shuffle(choices_list)
 
-            # The correct alternative has a "x" before its text
-            for index, value in enumerate(alternatives_list):
+            # The correct choice has a "x" before its text
+            for index, value in enumerate(choices_list):
                 if value[0] == "x":
                     correct_index = index
 
-                alternatives.append(value[2:])       
+                choices.append(value[2:])       
 
-            return Question(question, alternatives, correct_index)
+            return Question(question, choices, correct_index)
 
-    def _format_alternatives(self, alternatives):
-        alternatives_text = ""
+    def _format_choices(self, choices):
+        choices_text = ""
 
-        for index, value in enumerate(alternatives):
-            alternatives_text += f"{string.ascii_lowercase[index]}) {value}\n"
+        for index, value in enumerate(choices):
+            choices_text += f"{string.ascii_lowercase[index]}) {value}\n"
 
-        return alternatives_text
+        return choices_text
 
     def build_markdown(self, examcode=None):
         """
@@ -118,14 +120,14 @@ class Exam(object):
             with open(os.path.join(script_directory, "template", "question-template.md")) as f:
                 question_text = question.question
 
-                alternatives = question.alternatives
-                alternatives_text = self._format_alternatives(alternatives)
+                choices = question.choices
+                choices_text = self._format_choices(choices)
 
                 t = Template(f.read())
                 questions += t.substitute({"number": index+1,
                                         #    "marks": "1,0",
                                            "content": question_text,
-                                           "answers": alternatives_text})
+                                           "answers": choices_text})
 
         # Combine everything in the exam template
         with open(os.path.join(script_directory, "template", "exam-template.md")) as f:
@@ -211,7 +213,7 @@ class Batch(object):
         @exam_path: the exam filename.
         @quantity: the number of exams to generate.
         @random_questions: True to shuffle the questions, False to keep the order.
-        @random_answers: True to shuffle the alternatives, False to keep the order.
+        @random_answers: True to shuffle the choices, False to keep the order.
         @merge: True to merge all exams in one pdf, False to not merge.
         @front_and_back: True to generate a pdf to be printed front and back, False to print only in the front.
                          This is only used if the merge parameter is True.
